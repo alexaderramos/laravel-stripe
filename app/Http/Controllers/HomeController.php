@@ -25,7 +25,8 @@ class HomeController extends Controller
     {
         \Stripe\Stripe::setApiKey('sk_test_etZKsNtrlVCgaKMHIfR9LjVa00eCofEenr');
         $skus = \Stripe\SKU::all();
+        $plans= \Stripe\Plan::all();
 
-        return view('list.list', compact('skus'));
+        return view('list.list', compact('skus','plans'));
     }
 }

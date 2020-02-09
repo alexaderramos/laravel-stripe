@@ -98,21 +98,22 @@
                 <div class="col-md-12">
                     <h2>Suscripciones</h2>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                        <div class="card-body">
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                @foreach($plans as $item)
+
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{$item->nickname}}</text></svg>
+                            <div class="card-body">
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pay-suscription" data-plan="{{$item->id}}">Comprar</button>
+                                    </div>
                                 </div>
-                                <small class="text-muted">9 mins</small>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -142,8 +143,6 @@
 <script>
     (function() {
         var stripe = Stripe('pk_test_BgxntIiMbXMqO5kIIIjPoWpO002ILYOmsr');
-
-        var checkoutButton = document.getElementById('checkout-button-sku_GhRuAGnmPyd1CH');
        $('.pay').click(function (e) {
            stripe.redirectToCheckout({
                items: [{sku: $(this).data('sku'), quantity: 1}],
@@ -165,6 +164,30 @@
                }
            });
        })
+    })();
+</script>
+
+<script>
+    /**
+     * Script para las suscripciones
+     */
+    (function() {
+        var stripe = Stripe('pk_test_BgxntIiMbXMqO5kIIIjPoWpO002ILYOmsr');
+        $('.pay-suscription').click(function (e) {
+            stripe.redirectToCheckout({
+                items: [{plan: $(this).data('plan'), quantity: 1}],
+                successUrl: 'https://your-website.com/success',
+                cancelUrl: 'https://your-website.com/canceled',
+            })
+                .then(function (result) {
+                    if (result.error) {
+                        // If `redirectToCheckout` fails due to a browser or network
+                        // error, display the localized error message to your customer.
+                        var displayError = document.getElementById('error-message');
+                        displayError.textContent = result.error.message;
+                    }
+                });
+        })
     })();
 </script>
 
