@@ -143,6 +143,11 @@
 <script>
     (function() {
         var stripe = Stripe('pk_test_BgxntIiMbXMqO5kIIIjPoWpO002ILYOmsr');
+<<<<<<< HEAD
+=======
+
+        var checkoutButton = document.getElementById('checkout-button-sku_GhRuAGnmPyd1CH');
+>>>>>>> master
        $('.pay').click(function (e) {
            stripe.redirectToCheckout({
                items: [{sku: $(this).data('sku'), quantity: 1}],
@@ -167,6 +172,7 @@
     })();
 </script>
 
+<<<<<<< HEAD
 <script>
     /**
      * Script para las suscripciones
@@ -191,5 +197,7 @@
     })();
 </script>
 
+=======
+>>>>>>> master
 </html>
 
