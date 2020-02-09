@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('list.list');
+        \Stripe\Stripe::setApiKey('sk_test_etZKsNtrlVCgaKMHIfR9LjVa00eCofEenr');
+        $skus = \Stripe\SKU::all();
+
+        return view('list.list', compact('skus'));
     }
 }
