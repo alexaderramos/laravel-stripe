@@ -86,7 +86,7 @@
                                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Comprar</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary pay" data-sku="{{$item->id}}">Comprar</button>
                                     </div>
                                 </div>
                             </div>
@@ -130,5 +130,43 @@
 </footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
+
+
+<!-- Load Stripe.js on your website. -->
+<script src="https://js.stripe.com/v3"></script>
+
+
+
+<div id="error-message"></div>
+
+<script>
+    (function() {
+        var stripe = Stripe('pk_test_BgxntIiMbXMqO5kIIIjPoWpO002ILYOmsr');
+
+        var checkoutButton = document.getElementById('checkout-button-sku_GhRuAGnmPyd1CH');
+       $('.pay').click(function (e) {
+           stripe.redirectToCheckout({
+               items: [{sku: $(this).data('sku'), quantity: 1}],
+
+               // Do not rely on the redirect to the successUrl for fulfilling
+               // purchases, customers may not always reach the success_url after
+               // a successful payment.
+               // Instead use one of the strategies described in
+               // https://stripe.com/docs/payments/checkout/fulfillment
+               successUrl: 'https://your-website.com/success',
+               cancelUrl: 'https://your-website.com/canceled',
+           })
+           .then(function (result) {
+               if (result.error) {
+                   // If `redirectToCheckout` fails due to a browser or network
+                   // error, display the localized error message to your customer.
+                   var displayError = document.getElementById('error-message');
+                   displayError.textContent = result.error.message;
+               }
+           });
+       })
+    })();
+</script>
+
 </html>
 
