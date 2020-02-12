@@ -110,6 +110,9 @@
                                 <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
+                                        <!--Comprar productos -->
+                                        <a href="{{route('product-buy', $item->id)}}" class="btn btn-sm btn-outline-secondary pay">Comprar Directo</a>
+                                        <!--Comprar productos -->
                                         <button type="button" class="btn btn-sm btn-outline-secondary pay" data-sku="{{$item->id}}">Comprar</button>
                                     </div>
                                 </div>

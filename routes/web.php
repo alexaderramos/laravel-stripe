@@ -38,3 +38,20 @@ Route::post('/card-save',function (Request $request){
     $user->updateDefaultPaymentMethod($request->get('card'));
 
 });
+
+/**
+ * Ruta para comprar productos
+ */
+
+Route::get('/{sku}/product-buy',function (Request $request,$sku){
+    $user = \App\User::find(auth()->user()->id);
+
+    \Stripe\Stripe::setApiKey('sk_test_etZKsNtrlVCgaKMHIfR9LjVa00eCofEenr');
+    $sku = \Stripe\SKU::retrieve($sku);
+
+    $user->invoiceFor($sku->attributes->name, $sku->price, [
+       // 'quantity' => 1,
+    ], [
+        'tax_percent' => 18,
+    ]);
+})->name('product-buy');
