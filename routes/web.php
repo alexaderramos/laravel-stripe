@@ -55,3 +55,16 @@ Route::get('/{sku}/product-buy',function (Request $request,$sku){
         'tax_percent' => 18,
     ]);
 })->name('product-buy');
+
+/**
+ * Ruta para comprar subscripciones
+ */
+
+Route::get('/{plan}/plan-buy',function (Request $request,$plan){
+    $user = \App\User::find(auth()->user()->id);
+
+    \Stripe\Stripe::setApiKey('sk_test_etZKsNtrlVCgaKMHIfR9LjVa00eCofEenr');
+    $plan = \Stripe\Plan::retrieve($plan);
+    $paymentMethod = $user->defaultPaymentMethod();
+    $user->newSubscription($plan->product, $plan->id)->create($paymentMethod->asStripePaymentMethod()->id);
+})->name('plan-buy');
